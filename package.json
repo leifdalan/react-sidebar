@@ -6,7 +6,8 @@
   "main": "dist-modules/index.js",
   "scripts": {
     "build": "babel src --out-dir dist-modules && webpack",
-    "dev": "webpack --watch"
+    "dev": "webpack --watch",
+    "postinstall": "npm run build"
   },
   "keywords": [
     "component",

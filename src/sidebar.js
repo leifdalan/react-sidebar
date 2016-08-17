@@ -94,13 +94,18 @@ class Sidebar extends React.Component {
     // filter out if a user starts swiping with a second finger
     if (!this.isTouching()) {
       let touch = ev.targetTouches[0];
-      this.setState({
+      const newState = {
         touchIdentifier: touch.identifier,
         touchStartX: touch.clientX,
         touchStartY: touch.clientY,
         touchCurrentX: touch.clientX,
         touchCurrentY: touch.clientY,
-      });      
+      };
+      this.setState(newState);
+      this.props.onTouchStart({
+        ...newState,
+        ev
+      })
     }
   }
 
@@ -109,10 +114,15 @@ class Sidebar extends React.Component {
       for (let i = 0; i < ev.targetTouches.length; i++) {
         // we only care about the finger that we are tracking
         if (ev.targetTouches[i].identifier == this.state.touchIdentifier) {
-          this.setState({
+          const newState = {
             touchCurrentX: ev.targetTouches[i].clientX,
             touchCurrentY: ev.targetTouches[i].clientY,
-          });
+          }
+          this.setState(newState);
+          this.props.onTouchMove({
+            ...newState,
+            ev
+          })
           break;
         }
       }
@@ -128,14 +138,18 @@ class Sidebar extends React.Component {
           !this.props.open && touchWidth > this.props.dragToggleDistance) {
         this.props.onSetOpen(!this.props.open);
       }
-
-      this.setState({
+      const newState = {
         touchIdentifier: null,
         touchStartX: null,
         touchStartY: null,
         touchCurrentX: null,
         touchCurrentY: null,
-      });
+      }
+      this.setState(newState);
+      this.props.onTouchEnd({
+        ...newState,
+        ev
+      })
     }
   }
 
@@ -345,6 +359,9 @@ Sidebar.defaultProps = {
   touchHandleWidth: 20,
   dragToggleDistance: 30,
   onSetOpen: function() {},
+  onTouchStart: function() {},
+  onTouchMove: function() {},
+  onTouchEnd: function() {},
 };
 
 export default Sidebar;

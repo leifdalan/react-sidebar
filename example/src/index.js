@@ -1,11 +1,8 @@
 import React from 'react';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Sidebar from '../../src';
 import MaterialTitlePanel from './material_title_panel';
 import SidebarContent from './sidebar_content';
-
-injectTapEventPlugin();
 
 const styles = {
   contentHeaderMenuLink: {
@@ -63,6 +60,10 @@ var App = React.createClass({
       </p>);
   },
 
+  onTouchStart(obj) {
+    console.error('obj', obj);
+  },
+
   render() {
     let sidebar = <SidebarContent />;
 
@@ -85,7 +86,7 @@ var App = React.createClass({
     };
 
     return (
-      <Sidebar {...sidebarProps}>
+      <Sidebar onTouchStart={this.onTouchStart} {...sidebarProps}>
         <MaterialTitlePanel title={contentHeader}>
           <p>React Sidebar is a sidebar component for React. It offers the following features:</p>
           <ul>
